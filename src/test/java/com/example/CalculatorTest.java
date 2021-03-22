@@ -22,4 +22,12 @@ public class CalculatorTest {
         assertEquals(0, calc.add(formula));
         assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
     }
+    @Test
+    void BackSlashNAdditionTest(){
+        Calculator calc = new Calculator();
+
+        var formula = "15,2,\n3";
+        assertEquals(20, calc.add(formula));
+        assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
+    }
 }
