@@ -10,6 +10,5 @@ public class Calculator
             return 0;
 
         return Pattern.compile(",").splitAsStream(numbers).mapToInt(Integer::parseInt).sum();
-
     }
 }
