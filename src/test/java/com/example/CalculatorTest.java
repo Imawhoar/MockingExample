@@ -30,4 +30,14 @@ public class CalculatorTest {
         assertEquals(20, calc.add(formula));
         assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
     }
+
+    @Test
+    void ReplacementDelimeterAdditionTest()
+    {
+        Calculator calc = new Calculator();
+
+        var formula = "//;\n15;2;3";
+        assertEquals(20, calc.add(formula));
+        assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
+    }
 }
