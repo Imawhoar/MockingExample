@@ -32,7 +32,7 @@ public class CalculatorTest {
     }
 
     @Test
-    void ReplacementDelimeterAdditionTest()
+    void ReplacementDelimiterAdditionTest()
     {
         Calculator calc = new Calculator();
 
