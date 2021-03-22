@@ -15,6 +15,15 @@ public class CalculatorTest {
 
     }
     @Test
+    void NegativeAdditionTest(){
+        Calculator calc = new Calculator();
+
+        var formula = "-2,-51,6";
+        var thrown = assertThrows(RuntimeException.class, () -> calc.add(formula));
+        System.out.println(thrown.getMessage());
+    }
+
+    @Test
     void EmptyAdditionTest(){
         Calculator calc = new Calculator();
 
