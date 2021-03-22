@@ -22,7 +22,6 @@ public class CalculatorTest {
         var thrown = assertThrows(RuntimeException.class, () -> calc.add(formula));
         System.out.println(thrown.getMessage());
     }
-
     @Test
     void EmptyAdditionTest(){
         Calculator calc = new Calculator();
@@ -39,7 +38,6 @@ public class CalculatorTest {
         assertEquals(20, calc.add(formula));
         assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
     }
-
     @Test
     void ReplacementDelimiterAdditionTest()
     {
@@ -48,5 +46,17 @@ public class CalculatorTest {
         var formula = "//;\n15;2;3";
         assertEquals(20, calc.add(formula));
         assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
+    }
+
+    @Test
+    void Above1000AdditionTest()
+    {
+        Calculator calc = new Calculator();
+
+        //10+520+310+5100+2+3+510 = 6455
+        //10+520+310+(!5100)+2+3+510 = 1355
+        var formula = "10,520,310,5100,2,3,510";
+        assertEquals(1355, calc.add(formula));
+        assertNotEquals(6455, calc.add(formula));
     }
 }

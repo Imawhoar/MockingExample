@@ -35,6 +35,6 @@ public class Calculator
 
         //Det går inte att en stream två gånger enligt docs.
         //Det verkar fortfarande effektivt med att skapa en stream istället för Collection metoderna
-        return compiledPattern.splitAsStream(numbers).mapToInt(Integer::parseInt).sum();
+        return compiledPattern.splitAsStream(numbers).mapToInt(Integer::parseInt).filter((value -> value<1000)).sum();
     }
 }
