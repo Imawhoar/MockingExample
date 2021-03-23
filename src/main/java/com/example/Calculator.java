@@ -11,14 +11,31 @@ public class Calculator
         if(numbers.length()<1)
             return 0;
 
-        if(numbers.contains("//"))
+        numbers = numbers.replace("\n", "");
+
+        if(numbers.startsWith("//"))
         {
-            delim = String.valueOf(numbers.charAt(2));
-            numbers = numbers.substring(3);
+            //Eftersom Delim är mer än 1 char så kommer vi behöva manipulera en immutable sträng
+            //Därför skapar vi en stringbuilder, som är mutable, för att effektivisera lite.
+            StringBuilder stringBuilder = new StringBuilder();
+
+            //Vi vet att den tredje char är delimen så vi börjar där
+            char firstDelim = numbers.charAt(2);
+
+            for (int i = 2; i < numbers.length(); i++)
+            {
+                if(numbers.charAt(i) == firstDelim)
+                    stringBuilder.append(firstDelim);
+
+                //Om vi inte stoppar loopen när den träffar en siffra kommer den att plocka upp delimiters mellan siffrorna.
+                if(Character.isDigit(numbers.charAt(i)))
+                    break;
+            }
+            delim = stringBuilder.toString();
+            numbers = numbers.substring(2 + stringBuilder.length());
         }
         Pattern compiledPattern = Pattern.compile(delim);
 
-        numbers = numbers.replace("\n", "");
         var numberStream = compiledPattern.splitAsStream(numbers).mapToInt(Integer::parseInt);
 
 

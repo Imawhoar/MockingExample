@@ -59,4 +59,14 @@ public class CalculatorTest {
         assertEquals(1355, calc.add(formula));
         assertNotEquals(6455, calc.add(formula));
     }
+
+    @Test
+    void MultiDelimeterAdditionTest()
+    {
+        Calculator calc = new Calculator();
+
+        var formula = "//;;;\n5;;;1;;;2";
+        assertEquals(8, calc.add(formula));
+        assertNotEquals(512, calc.add(formula));
+    }
 }
