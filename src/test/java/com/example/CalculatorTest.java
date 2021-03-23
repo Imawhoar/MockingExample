@@ -34,7 +34,7 @@ public class CalculatorTest {
     void BackSlashNAdditionTest(){
         Calculator calc = new Calculator();
 
-        var formula = "15,2,\n3";
+        var formula = "15,2\n3";
         assertEquals(20, calc.add(formula));
         assertNotEquals(Integer.MAX_VALUE, calc.add(formula));
     }
@@ -80,14 +80,17 @@ public class CalculatorTest {
         assertNotEquals(512325, calc.add(formula));
     }
 
-   /* @Test
+    @Test
     void MultiVaryingDelimiterAdditionTest()
     {
         Calculator calc = new Calculator();
 
         //5+15+3+1 = 24
-        var formula = "//[;;][./]['.]\n5./15;;3'.1";
+        var formula = "//[;;][..][::]\n5;;15..3::1";
         assertEquals(24, calc.add(formula));
         assertNotEquals(512325, calc.add(formula));
-    }*/
+    }
+
+
+
 }
