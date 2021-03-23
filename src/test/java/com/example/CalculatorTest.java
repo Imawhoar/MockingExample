@@ -65,8 +65,29 @@ public class CalculatorTest {
     {
         Calculator calc = new Calculator();
 
-        var formula = "//;;;\n5;;;1;;;2";
+        var formula = "//[;;;]\n5;;;1;;;2";
         assertEquals(8, calc.add(formula));
         assertNotEquals(512, calc.add(formula));
     }
+    @Test
+    void VaryingDelimiterAdditionTest()
+    {
+        Calculator calc = new Calculator();
+
+        //5+1+2+3+2+5 = 18
+        var formula = "//[;][.][']\n5;1.2.3;2.5";
+        assertEquals(18, calc.add(formula));
+        assertNotEquals(512325, calc.add(formula));
+    }
+
+   /* @Test
+    void MultiVaryingDelimiterAdditionTest()
+    {
+        Calculator calc = new Calculator();
+
+        //5+15+3+1 = 24
+        var formula = "//[;;][./]['.]\n5./15;;3'.1";
+        assertEquals(24, calc.add(formula));
+        assertNotEquals(512325, calc.add(formula));
+    }*/
 }

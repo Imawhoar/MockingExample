@@ -1,42 +1,62 @@
 package com.example;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Calculator
 {
     int add(String numbers) throws RuntimeException {
 
-        String delim = ",";
-        if(numbers.length()<1)
+        if(numbers.length() < 1)
             return 0;
+
+        String delim = ",";
 
         numbers = numbers.replace("\n", "");
 
+        //
+        Pattern patternToExtractFormula;
+        //Fråga inte, Adapt or Die
+        Pattern patternToExtractDelimiters = Pattern.compile("(?<=\\[)(.*?)(?=\\])|(?<=//)(.)(?=[0-9])");
+        Pattern patternToSplitParseFormula;
         if(numbers.startsWith("//"))
         {
-            //Eftersom Delim är mer än 1 char så kommer vi behöva manipulera en immutable sträng
+            //Eftersom delimitern kanske blir mer än 1 char så kommer vi behöva manipulera en immutable sträng
             //Därför skapar vi en stringbuilder, som är mutable, för att effektivisera lite.
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder delimBuilder = new StringBuilder();
 
-            //Vi vet att den tredje char är delimen så vi börjar där
-            char firstDelim = numbers.charAt(2);
 
-            for (int i = 2; i < numbers.length(); i++)
+            //löser ut alla delimiters som finns i början av argumentet -> //[.][;][..]x.xx;y..z == '.', ';', '..'
+            Matcher delimiterMatch = patternToExtractDelimiters.matcher(numbers);
+
+            int delimiterCount = 0;
+            while (delimiterMatch.find())
             {
-                if(numbers.charAt(i) == firstDelim)
-                    stringBuilder.append(firstDelim);
-
-                //Om vi inte stoppar loopen när den träffar en siffra kommer den att plocka upp delimiters mellan siffrorna.
-                if(Character.isDigit(numbers.charAt(i)))
-                    break;
+                ++delimiterCount;
+                delimBuilder.append(delimiterMatch.group());
             }
-            delim = stringBuilder.toString();
-            numbers = numbers.substring(2 + stringBuilder.length());
-        }
-        Pattern compiledPattern = Pattern.compile(delim);
 
-        var numberStream = compiledPattern.splitAsStream(numbers).mapToInt(Integer::parseInt);
+            //Regex är knasig med syntaxen för hur delimiterna plockas upp.
+            //[...] kräver inga brackets för att det räknas som HEL delimiter
+            // vs [.][.][.] som behöver använda brackets i syntaxen för att plocka upp flera symboler.
+            if(delimiterCount > 1)
+                delim = "[" +delimBuilder.toString() + "]";
+            else
+                delim = delimBuilder.toString();
+        }
+
+
+        patternToExtractFormula = Pattern.compile("-?\\d+(\\s*"+delim+"\\s*-?\\d+)+$");
+        Matcher match = patternToExtractFormula.matcher(numbers);
+        if(!match.find())
+            throw new RuntimeException("Format is wrong in formula");
+
+        var extractedStringFormula = match.group();
+
+
+        patternToSplitParseFormula = Pattern.compile(delim);
+        var numberStream = patternToSplitParseFormula.splitAsStream(extractedStringFormula).mapToInt(Integer::parseInt);
 
 
         //Check for negative values
@@ -52,6 +72,6 @@ public class Calculator
 
         //Det går inte att en stream två gånger enligt docs.
         //Det verkar fortfarande effektivt med att skapa en stream istället för Collection metoderna
-        return compiledPattern.splitAsStream(numbers).mapToInt(Integer::parseInt).filter((value -> value<1000)).sum();
+        return patternToSplitParseFormula.splitAsStream(extractedStringFormula).mapToInt(Integer::parseInt).filter((value -> value<1000)).sum();
     }
 }
