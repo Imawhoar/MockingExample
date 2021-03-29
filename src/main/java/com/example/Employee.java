@@ -1,7 +1,6 @@
 package com.example;
 
 public class Employee {
-
 	private String id;
 	private double salary;
 	private boolean paid;

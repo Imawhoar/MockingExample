@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Calculator {
-    int add(String numbers) throws RuntimeException
+    public int add(String numbers) throws RuntimeException
     {
         int[] parsedNumbers = Pattern.compile("[^-?0-9]+")
                 .splitAsStream(numbers).filter(s -> !s.isBlank())
@@ -16,6 +16,6 @@ public class Calculator {
         if(negativeArray.length > 0)
             throw new RuntimeException(Arrays.toString(negativeArray));
 
-        return Arrays.stream(parsedNumbers).filter(value -> value < 1000 && value > 0).sum();
+        return Arrays.stream(parsedNumbers).filter(value -> value < 1000).sum();
     }
 }
